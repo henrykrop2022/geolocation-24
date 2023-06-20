@@ -11,6 +11,7 @@ pipeline {
         }
         stage('Upload artifact'){
             steps{
+                script{
                 nexusArtifactUploader artifacts: 
                 [[artifactId: '${POM_ARTIFACTID}', 
                 classifier: '', 
@@ -23,6 +24,7 @@ pipeline {
                  protocol: 'http', 
                  repository: 'maven-snapshots', 
                  version: '${POM_VERSION}'
+                }
             }
         }
     }
