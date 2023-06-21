@@ -25,7 +25,7 @@ pipeline{
             steps{
                 echo 'build & SonarQube analysis...'
                 withSonarQubeEnv('sonarQube'){
-                    sh 'mvn verify sonar:sonar'
+                    sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=henrykrop2022_geolocation-24'
                  }
             }
          }
