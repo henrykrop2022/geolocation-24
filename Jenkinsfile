@@ -15,7 +15,7 @@ pipeline {
         stage('Build & SonarQube analysis'){
             agent any
             steps{
-                withSonarQubeEnv(credentialsId: 'sonarID') {
+                withSonarQubeEnv('sonar-scanner') {
                 sh 'mvn sonar:sonar'
             
         }
