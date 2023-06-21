@@ -2,12 +2,17 @@ pipeline{
     triggers{
         pollSCM('* * * * *')
     }
-    agent{
-        docker{ image 'maven:3.8.6-openjdk-18'}
-    }
+    // agent{
+    //     docker{ image 'maven:3.8.6-openjdk-18'}
+    // }
     tools{
         maven 'M2_HOME'
     }
+    environment {
+    registry = '880385147960.dkr.ecr.us-east-1.amazonaws.com/geolocation_24'
+    registryCredential = 'aws_jenkins'
+    dockerimage = ''
+}
     stages{
         stage("Maven Build"){
             steps{
@@ -30,5 +35,16 @@ pipeline{
                 } 
             }
         }
+        stage('Deploy image') {
+           
+            
+            steps{
+                script{ 
+                    docker.withRegistry("https://"+registry,"ecr:us-east-1:"+registryCredential) {
+                        dockerImage.push()
+                    }
+                }
+            }
+        }    
     }
 }
