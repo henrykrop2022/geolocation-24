@@ -21,14 +21,20 @@ pipeline{
                 sh 'mvn package -DskipTests'
             }
          }
-         stage("Build & SonarQube analysis"){
-            steps{
-                echo 'build & SonarQube analysis...'
-                withSonarQubeEnv('sonarQube'){
-                    sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=henrykrop2022_geolocation-24'
-                 }
-            }
-         }
+        // 
+        stage('SonarQube analysis') {
+    tools {
+        jdk "jdk11" // the name you have given the JDK installation using the JDK manager (Global Tool Configuration)
+    }
+    environment {
+        scannerHome = tool 'sonarQube Scanner' // the name you have given the Sonar Scanner (Global Tool Configuration)
+    }
+    steps {
+        withSonarQubeEnv(installationName: 'SonarQube') {
+            sh 'mvn sonar:sonar'
+        }
+    }
+}
           stage('Check Quality Gate') {
             steps {
                 echo 'Checking quality gate...'
