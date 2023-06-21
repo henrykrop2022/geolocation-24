@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        docker{ image 'maven:3.8.6-openjdk-18'}
+    }
     tools{
         maven 'M2_HOME'
     }
@@ -7,14 +9,15 @@ pipeline {
         stage('maven build'){
             steps{
                 sh 'mvn clean install package'
+               }
             }
         }
         stage('Build & SonarQube analysis'){
             agent any
             steps{
-                withSonarQubeEnv('sonarQube')
+                withSonarQubeEnv(credentialsId: 'sonarID') {
                 sh 'mvn sonar:sonar'
-            }
+            
         }
         stage('Upload artifact'){
             steps{
@@ -32,6 +35,7 @@ pipeline {
                  protocol: 'http', 
                  repository: 'maven-snapshots', 
                  version: "${mavenPom.version}"
+                   }
                 }
             }
         }
