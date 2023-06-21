@@ -19,7 +19,8 @@ pipeline {
             steps{
                withSonarQubeEnv('SonarServer'){
                 sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=henrykrop2022_geolocation-24'
-            
+               }
+            }
         }
         stage('Check Quality Gate'){
             steps{
@@ -50,8 +51,8 @@ pipeline {
                  protocol: 'http', 
                  repository: 'maven-snapshots', 
                  version: "${mavenPom.version}"
-                   }
-                }
+                   
+                
             }
         }
     }
