@@ -13,9 +13,8 @@ pipeline {
             }
         }
         stage('Build & SonarQube analysis'){
-            agent any
             steps{
-                withSonarQubeEnv('sonar-scanner') {
+               withSonarQubeEnv('SonarServer')  {
                 sh 'mvn sonar:sonar'
             
         }
