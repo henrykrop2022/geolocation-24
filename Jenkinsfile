@@ -21,7 +21,7 @@ pipeline{
                 sh 'mvn package -DskipTests'
             }
          }
-         stage("Build & SonarQube analysis"){
+         stage('Build & SonarQube analysis'){
             steps{
                 echo 'build & SonarQube analysis...'
                 withSonarQubeEnv('sonarQube') {
