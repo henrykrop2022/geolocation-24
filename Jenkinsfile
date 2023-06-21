@@ -24,10 +24,10 @@ pipeline{
         // 
         stage('SonarQube analysis') {
     environment {
-        scannerHome = tool 'sonarQube' // the name you have given the Sonar Scanner (Global Tool Configuration)
+        scannerHome = tool 'SonarQube Sanner' // the name you have given the Sonar Scanner (Global Tool Configuration)
     }
     steps {
-        withSonarQubeEnv(installationName: 'SonarQube') {
+        withSonarQubeEnv(installationName: 'SonarQube Sanner') {
             sh 'mvn sonar:sonar'
         }
     }
