@@ -16,16 +16,31 @@ pipeline{
     stages{
         stage("Maven Build"){
             steps{
-                sh 'mvn clean install package'  
+                sh 'mvn clean'
+                sh 'mvn package -DskipTests'
             }
          }
          stage("Build & SonarQube analysis"){
             steps{
-                withSonarQubeEnv('SonarQube'){
-                    sh 'maven:sonar-maven-plugin:sonar -Dsonar.projectKey=henrykrop2022_geolocation-24'
+                echo 'build & SonarQube analysis...'
+                withSonarQubeEnv('SonarServer'){
+                    sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=henrykrop2022_geolocation-24'
                  }
             }
          }
+          stage('Check Quality Gate') {
+            steps {
+                echo 'Checking quality gate...'
+                 script {
+                     timeout(time: 20, unit: 'MINUTES') {
+                         def qg = waitForQualityGate()
+                         if (qg.status != 'OK') {
+                             error "Pipeline stopped because of quality gate status: ${qg.status}"
+                         }
+                     }
+                 }
+            }
+        }
          stage('Build Image') {
             
             steps {
