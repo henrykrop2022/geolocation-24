@@ -8,8 +8,8 @@ pipeline{
     tools{
          maven 'M2_HOME'
     }
-    stage{
-        stages('Maven Build'){
+    stages{
+        stage('Maven Build'){
             steps{
                 sh 'mvn clean install package'
             }
