@@ -21,17 +21,14 @@ pipeline{
                 sh 'mvn package -DskipTests'
             }
          }
-        // 
-        stage('SonarQube analysis') {
-    environment {
-        scannerHome = tool 'SonarQube Sanner' // the name you have given the Sonar Scanner (Global Tool Configuration)
-    }
-    steps {
-        withSonarQubeEnv(installationName: 'SonarQube Sanner') {
-            sh 'mvn sonar:sonar'
-        }
-    }
-}
+         stage("Build & SonarQube analysis"){
+            steps{
+                echo 'build & SonarQube analysis...'
+                withSonarQubeEnv(credentialsId: 'sonarID') {
+                    sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=henrykrop2022_geolocation-24'
+                 }
+            }
+         }
           stage('Check Quality Gate') {
             steps {
                 echo 'Checking quality gate...'
