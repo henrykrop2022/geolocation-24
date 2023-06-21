@@ -1,6 +1,6 @@
 pipeline{
-    triggers{
-        pollSCM('* * * * *')
+    // triggers{
+    //     pollSCM('* * * * *')
     }
     agent{
         docker{ image 'maven:3.8.6-openjdk-18'}
@@ -17,9 +17,9 @@ pipeline{
          stage("Build & SonarQube analysis"){
             steps{
                 withSonarQubeEnv('SonarQube'){
-                    sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=henrykrop2022_geolocation-24'
+                    sh 'maven:sonar-maven-plugin:sonar -Dsonar.projectKey=henrykrop2022_geolocation-24'
                  }
             }
          }
     }
-}
+// }
