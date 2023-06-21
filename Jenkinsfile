@@ -21,5 +21,14 @@ pipeline{
                  }
             }
          }
+         stage('Build Image') {
+            
+            steps {
+                script{
+                  def mavenPom = readMavenPom file: 'pom.xml'
+                    dockerImage = docker.build registry + ":${mavenPom.version}"
+                } 
+            }
+        }
     }
 }
