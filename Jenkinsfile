@@ -9,6 +9,13 @@ pipeline {
                 sh 'mvn clean install package'
             }
         }
+        stage('Build & SonarQube analysis'){
+            agent any
+            steps{
+                withSonarQubeEnv('sonarQube')
+                sh 'mvn sonar:sonar'
+            }
+        }
         stage('Upload artifact'){
             steps{
                 script{
