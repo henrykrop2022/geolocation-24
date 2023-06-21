@@ -1,4 +1,7 @@
 pipeline {
+    triggers{
+        pollSCM('* * * * *')
+    }
     agent {
         docker{ image 'maven:3.8.6-openjdk-18'}
     }
@@ -14,9 +17,22 @@ pipeline {
         }
         stage('Build & SonarQube analysis'){
             steps{
-               withSonarQubeEnv('SonarServer')  {
-                sh 'mvn sonar:sonar'
+               withSonarQubeEnv('SonarServer'){
+                sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=henrykrop2022_geolocation-24'
             
+        }
+        stage('Check Quality Gate'){
+            steps{
+                echo 'check quality gate...'
+                script{
+                    timeout(time: 20, unit:'MINUTES'){
+                        def qg = waitForQaulityGate()
+                        if (qg.stattus != 'OK'){
+                            error "Pipeline stopped because of quality gate status: ${qg.status}"
+                        }
+                    }
+                }
+            }
         }
         stage('Upload artifact'){
             steps{
