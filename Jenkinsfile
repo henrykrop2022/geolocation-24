@@ -19,8 +19,8 @@ pipeline {
             steps{
                 withSonarQubeEnv('sonarQube') {
                 sh 'mvn verify sonar:sonar'
+               }
             }
-
         }
     }
 }
