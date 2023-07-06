@@ -17,8 +17,8 @@ pipeline {
         }
         stage("Build & SonarQube Analysis"){
             steps{
-                withSonarQubeEnv('sonarQube') {
-                sh 'mvn verify sonar:sonar'
+                withSonarQubeEnv('SonarServer') {
+                sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=henrykrop2022_geolocation-24'
                }
             }
         }
