@@ -15,5 +15,12 @@ pipeline {
                 sh 'mvn package'
             }
         }
+        stage("Build & SonarQube Analysis"){
+            steps{
+                withSonarQubeEnv('sonarQube') {
+                sh 'mvn verify sonar:sonar'
+            }
+
+        }
     }
 }
