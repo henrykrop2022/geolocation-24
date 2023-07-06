@@ -11,14 +11,13 @@ pipeline {
     stages{
         stage("Maven Build"){
             steps{
-                sh 'mvn clean'
-                sh 'mvn package'
+                sh 'mvn clean package'
             }
         }
         stage("Build & SonarQube Analysis"){
             steps{
-                withSonarQubeEnv('SonarServer') {
-                sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=henrykrop2022_geolocation-24'
+                withSonarQubeEnv('Sonarqube scanner') {
+                sh 'mvn sonar:sonar'
                }
             }
         }
